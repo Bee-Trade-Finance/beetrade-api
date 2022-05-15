@@ -19,10 +19,6 @@ const order = require('./routes/api/order');
 // Initialize the app
 const app = express();
 
-// set the directory for loading assets from the server
-app.use(express.static('public'));
-
-
 // Enable cors middleware for enabling cross origin requests
 app.use(cors());
 
