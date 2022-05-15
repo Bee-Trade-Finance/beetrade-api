@@ -6,6 +6,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 
+
 // DB Config
 
 
@@ -46,26 +47,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`Server has started on port ${port}`);
 })
-
-
-// var LimitOrder = require('limit-order-book').LimitOrder
-// var LimitOrderBook = require('limit-order-book').LimitOrderBook
-// var MarketOrder = require('limit-order-book').MarketOrder
- 
-// let order1 = new LimitOrder("order01", "bid", 13.37, 10)
-// let order2 = new LimitOrder("order02", "ask", 13.37, 5)
-// let order3 = new LimitOrder("order03", "ask", 13.37, 5)
-// let order4 = new LimitOrder("order04", "ask", 13.37, 5)
- 
-// let book = new LimitOrderBook()
- 
-// let result = book.add(order1)
-// console.log('1',result)
-// result = book.add(order2)
-// console.log('2',result)
-// result = book.add(order3)
-// console.log('3',result)
-// result = book.add(order4)
- 
-// console.log(result)
-// console.log('book',book)

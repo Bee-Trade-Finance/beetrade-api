@@ -13,8 +13,21 @@ async function verifyBalanceOrModifyOrder(order){
         let OrderbookContract = new ethers.Contract(process.env.CONTRACT_ADDRESS, OrderbookContractABI, provider);
         let balance = await OrderbookContract.tokensBalances(pair2Address, order.account);
         let userBalance = ethers.utils.formatEther(balance);
-        console.log(userBalance)
-        return order;
+        if(order.amountB > userBalance){
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        let pair1Address = getTokenBySymbol(pair1).address;
+        let OrderbookContract = new ethers.Contract(process.env.CONTRACT_ADDRESS, OrderbookContractABI, provider);
+        let balance = await OrderbookContract.tokensBalances(pair1Address, order.account);
+        let userBalance = ethers.utils.formatEther(balance);
+        if(order.amountA > userBalance){
+            return false;
+        } else {
+            return true;
+        }
     }
     
 }
