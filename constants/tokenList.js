@@ -13,7 +13,7 @@ const tokenList = [
         symbol: "AVAX",
     },
     {
-        address: "0x37854dAB6E98620cb1b2F3D877AbbE6ff8fabAee",
+        address: "0x731E66a4D82c6f0EE921D47AB3B4503347e9AEC8",
         logoUrl: "https://cryptologos.cc/logos/tether-usdt-logo.svg?v=022",
         name: "USD Tether",
         symbol: "USDT",
