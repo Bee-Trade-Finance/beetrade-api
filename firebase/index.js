@@ -53,7 +53,7 @@ const sendOrder = async (order) => {
 
 const deleteOrder = async (order) => {
   let query = doc(db, `${order.pair}-${order.buySell.toUpperCase()}`, order.id);
-  let tradeQuery = doc(db, `${order.pair}-TRADE`, order.id);
+  let tradeQuery = doc(db, `${order.pair}-TRADES`, order.id);
   try {
     if(order.filledAmount > 0) {
       let res = await setDoc(tradeQuery, order);
