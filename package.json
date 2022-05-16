@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "hot": "nodemon server",
-    "btf-avax": "pm2 start books/BTF-AVAX.js"
+    "btf-avax": "pm2 start books/BTF-AVAX.js",
+    "btf-usdt": "pm2 start books/BTF-USDT.js",
+    "avax-usdt": "pm2 start books/AVAX-USDT.js"
   },
   "keywords": [],
   "author": "",
