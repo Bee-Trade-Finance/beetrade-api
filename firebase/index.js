@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 const {initializeApp } = require("firebase/app");
 const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } = require("firebase/auth");
-const { getFirestore, collection, addDoc, query, where, getDocs, doc, setDoc, onSnapshot, updateDoc, deleteDoc  } = require("firebase/firestore");
+const { getFirestore, collection, addDoc, query, where, getDocs, getDoc, doc, setDoc, onSnapshot, updateDoc, deleteDoc  } = require("firebase/firestore");
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -51,9 +51,15 @@ const sendOrder = async (order) => {
   }
 }
 
-const deleteOrder = async (order) => {
-  let query = doc(db, `${order.pair}-${order.buySell.toUpperCase()}`, order.id);
-  let tradeQuery = doc(db, `${order.pair}-TRADES`, order.id);
+const deleteOrder = async (orderData) => {
+  console.log('orderDoc',orderData);
+  let query = doc(db, `${orderData.pair}-${orderData.buySell.toUpperCase()}`, orderData.id);
+  let tradeQuery = doc(db, `${orderData.pair}-TRADES`, orderData.id);
+  
+  let orderDoc = await getDoc(query);
+  
+  let order = orderDoc.data();
+
   try {
     if(order.filledAmount > 0) {
       let res = await setDoc(tradeQuery, order);

@@ -7,7 +7,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 
-// DB Config
+// Event Listeners
+const {CreateListener, CancelListener} = require('./listeners/OrderListener');
+
+CreateListener();
+CancelListener();
 
 
 // Load the routes from the api

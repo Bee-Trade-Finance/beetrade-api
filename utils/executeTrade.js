@@ -5,7 +5,7 @@ require("dotenv").config();
 
 async function executeTrade(trade){
     const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
-    var privateKey = "cd30250a542913c5501387f2965d2a487bc4dc54259dc3639b80b4860c3113d1";
+    var privateKey = process.env.PRIVATE_KEY;
     var signer = new ethers.Wallet(privateKey, provider);
     // returns modified order or intact order
     let OrderbookContract = new ethers.Contract(process.env.CONTRACT_ADDRESS, OrderbookContractABI, signer);
