@@ -56,9 +56,9 @@ function processTrade(trade){
             pair,
             price
         };
+        updateFirebaseTrade(trade);
         executeTrade(obj).then(execution => {
             console.log('execution', execution)
-            updateFirebaseTrade(trade);
             // if fully fileed update details and then move to user trades
             // else
             // check if taker is buy or sell
@@ -81,7 +81,8 @@ function updateFirebaseTrade(trade){
 
     if(taker.sizeRemaining <= 0){ 
         // trade is complete so remove and add to users trades
-        setDoc(docTradeRef, {takerOrder, filledAmount: takerOrder.amountA});
+        console.log('we are hereeeee')
+        setDoc(docTradeRef, {...takerOrder, filledAmount: takerOrder.amountA});
         deleteDoc(docRef);
     } else {
         let filledAmount = trade.takeSize;

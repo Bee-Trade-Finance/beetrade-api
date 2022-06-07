@@ -56,9 +56,9 @@ function processTrade(trade){
             pair,
             price
         };
+        updateFirebaseTrade(trade);
         executeTrade(obj).then(execution => {
             console.log('execution', execution)
-            updateFirebaseTrade(trade);
             // if fully fileed update details and then move to user trades
             // else
             // check if taker is buy or sell

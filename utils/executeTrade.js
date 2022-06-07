@@ -9,6 +9,7 @@ async function executeTrade(trade){
     var signer = new ethers.Wallet(privateKey, provider);
     // returns modified order or intact order
     let OrderbookContract = new ethers.Contract(process.env.CONTRACT_ADDRESS, OrderbookContractABI, signer);
+    console.log('tradeszz', trade)
     let result = await OrderbookContract.singleTrade(
         trade.makerAddress, 
         trade.takerAddress,

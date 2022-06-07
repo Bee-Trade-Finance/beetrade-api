@@ -45,14 +45,12 @@ const fetchOrCreateUser = async (address) => {
 const sendOrder = async (order) => {
   try {
     let res = await setDoc(doc(db, `${order.pair}-${order.buySell.toUpperCase()}`, order.id), order, { merge: true });
-    console.log(res);
   } catch(error){
     console.log(error);
   }
 }
 
 const deleteOrder = async (orderData) => {
-  console.log('orderDoc',orderData);
   let query = doc(db, `${orderData.pair}-${orderData.buySell.toUpperCase()}`, orderData.id);
   let tradeQuery = doc(db, `${orderData.pair}-TRADES`, orderData.id);
   
@@ -65,7 +63,6 @@ const deleteOrder = async (orderData) => {
       let res = await setDoc(tradeQuery, order);
     }
     let res2 = await deleteDoc(query);
-    console.log(res2)
   } catch(error){
     console.log(error)
   }
@@ -82,7 +79,6 @@ const fetchSupportedTokens = async () => {
       // doc.data() is never undefined for query doc snapshots
       res.push(doc.data());
     });
-    console.log(res)
     return res;
   } catch(err){
     alert(err)
