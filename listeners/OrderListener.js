@@ -29,6 +29,7 @@ async function CreateListener(){
             date,
             fills: []
         };
+        console.log('Order Created', orderData)
         createOrder(orderData);
         // console.log(`Order Account: ${account}`);
         // console.log(`Order Amount: ${amount/1e18}`);
@@ -51,7 +52,7 @@ async function CancelListener(){
     let OrderbookContract = new ethers.Contract(process.env.CONTRACT_ADDRESS, OrderbookContractABI, signer);
     
     OrderbookContract.on('CancelOrder', (account, pair, buySell, orderID) => {
-        
+        console.log('Order Cancelled', {account, pair, buySell, id: orderID})
         cancelOrder({account, pair, buySell, id: orderID});
     })
     
