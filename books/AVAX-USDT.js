@@ -91,7 +91,7 @@ function updateFirebaseTrade(trade){
     makers.forEach(maker => {
         let _collection = maker.side === 'bid'? pairBuy : pairSell;
         const docRef = doc(db, _collection, maker.orderId);
-        const docTradeRef = doc(db, pairTrade, taker.orderId);
+        const docTradeRef = doc(db, pairTrade, maker.orderId);
         let makerOrder = maker.side === 'bid' ? newbuyOrders.find(order => order.id === maker.orderId) : newSellOrders.find(order => order.id === maker.orderId);
 
         if(maker.sizeRemaining <= 0){
