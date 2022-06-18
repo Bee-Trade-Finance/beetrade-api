@@ -16,6 +16,7 @@ CancelListener();
 
 // Load the routes from the api
 const order = require('./routes/api/order');
+const stats = require('./routes/api/stats');
 
 
 
@@ -33,6 +34,7 @@ app.use(bodyParser.json());
 
 // Load the routes into the application
 app.use('/api/order', order);
+app.use('/api/stats', stats);
 
 
 

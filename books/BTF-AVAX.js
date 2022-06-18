@@ -19,7 +19,7 @@ let pair = "BTF-AVAX";
 let pairBuy = "BTF-AVAX-BUY";
 let pairSell = "BTF-AVAX-SELL";
 let pairTrade = "BTF-AVAX-TRADES"
-let BTF = "0xf050cB1B7e50e881f2A2A2a7eBF5fa333A0543EC";
+let BTF = "0x108aAd0Fac57435Ed4bd2AAFBBF1808BAd586589";
 let AVAX = "0x0000000000000000000000000000000000000000";
 
 function processTrade(trade){
@@ -78,11 +78,12 @@ function updateFirebaseTrade(trade){
     const docRef = doc(db, _collection, taker.orderId);
     const docTradeRef = doc(db, pairTrade, taker.orderId);
     let takerOrder = taker.side === 'bid' ? newbuyOrders.find(order => order.id === taker.orderId) : newSellOrders.find(order => order.id === taker.orderId);
-
+    let averagePrice = 0;
+    makers.forEach(maker => averagePrice+=maker.price);
+    averagePrice = averagePrice/makers.length;
     if(taker.sizeRemaining <= 0){ 
         // trade is complete so remove and add to users trades
-        console.log('we are hereeeee')
-        setDoc(docTradeRef, {...takerOrder, filledAmount: takerOrder.amountA});
+        setDoc(docTradeRef, {...takerOrder, filledAmount: takerOrder.amountA, price: averagePrice, date: Date.now()});
         deleteDoc(docRef);
     } else {
         let filledAmount = trade.takeSize;
@@ -97,7 +98,7 @@ function updateFirebaseTrade(trade){
 
         if(maker.sizeRemaining <= 0){
             // trade is complete so remove and add to users trades
-            setDoc(docTradeRef, {...makerOrder, filledAmount: makerOrder.amountA});
+            setDoc(docTradeRef, {...makerOrder, filledAmount: makerOrder.amountA, date: Date.now()});
             deleteDoc(docRef);
         } else {
             let filledAmount = maker.size - maker.sizeRemaining;

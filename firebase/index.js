@@ -129,6 +129,7 @@ module.exports = {
     fetchSupportedTokens,
     fetchStakingDetails,
     fetchTokenDetails,
+    getDocs,
     setDoc,
     updateDoc,
     deleteDoc,

@@ -20,7 +20,7 @@ let pairBuy = "AVAX-USDT-BUY";
 let pairSell = "AVAX-USDT-SELL";
 let pairTrade = "AVAX-USDT-TRADES"
 let AVAX = "0x0000000000000000000000000000000000000000";
-let USDT = "0x731E66a4D82c6f0EE921D47AB3B4503347e9AEC8";
+let USDT = "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7";
 
 function processTrade(trade){
     const {taker, makers} = trade;
@@ -78,10 +78,12 @@ function updateFirebaseTrade(trade){
     const docRef = doc(db, _collection, taker.orderId);
     const docTradeRef = doc(db, pairTrade, taker.orderId);
     let takerOrder = taker.side === 'bid' ? newbuyOrders.find(order => order.id === taker.orderId) : newSellOrders.find(order => order.id === taker.orderId);
-
+    let averagePrice = 0;
+    makers.forEach(maker => averagePrice+=maker.price);
+    averagePrice = averagePrice/makers.length;
     if(taker.sizeRemaining <= 0){ 
         // trade is complete so remove and add to users trades
-        setDoc(docTradeRef, {takerOrder, filledAmount: takerOrder.amountA});
+        setDoc(docTradeRef, {...takerOrder, filledAmount: takerOrder.amountA, price: averagePrice, date: Date.now()});
         deleteDoc(docRef);
     } else {
         let filledAmount = trade.takeSize;
@@ -96,7 +98,7 @@ function updateFirebaseTrade(trade){
 
         if(maker.sizeRemaining <= 0){
             // trade is complete so remove and add to users trades
-            setDoc(docTradeRef, {...makerOrder, filledAmount: makerOrder.amountA});
+            setDoc(docTradeRef, {...makerOrder, filledAmount: makerOrder.amountA, date: Date.now()});
             deleteDoc(docRef);
         } else {
             let filledAmount = maker.size - maker.sizeRemaining;

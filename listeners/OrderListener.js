@@ -5,16 +5,18 @@ const OrderbookContractABI = require("../abis/BeeTradeOrderbook.json");
 
 require("dotenv").config();
 
-async function CreateListener(){
-    const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
-    var privateKey = process.env.PRIVATE_KEY;
-    var signer = new ethers.Wallet(privateKey, provider);
-    // returns modified order or intact order
-    let OrderbookContract = new ethers.Contract(process.env.CONTRACT_ADDRESS, OrderbookContractABI, signer);
+const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
+var privateKey = process.env.PRIVATE_KEY;
+var signer = new ethers.Wallet(privateKey, provider);
+// returns modified order or intact order
+let OrderbookContract = new ethers.Contract(process.env.CONTRACT_ADDRESS, OrderbookContractABI, signer);
     
+
+async function CreateListener(){
     OrderbookContract.on('CreateOrder', (account, amount, buySell, date, orderType, pair, price, orderID) => {
         let volume = amount/1e18;
         let _price = price/1e18;
+        if(volume < 1 || _price < 1) return;
         let orderData = {
             id: orderID,
             pair,
@@ -26,7 +28,7 @@ async function CreateListener(){
             orderType, 
             account,
             filledAmount: 0,
-            date,
+            date: parseInt(date),
             fills: []
         };
         console.log('Order Created', orderData)
@@ -45,12 +47,6 @@ async function CreateListener(){
 }
 
 async function CancelListener(){
-    const provider = new ethers.providers.JsonRpcProvider(process.env.RPC_URL);
-    var privateKey = process.env.PRIVATE_KEY;
-    var signer = new ethers.Wallet(privateKey, provider);
-    // returns modified order or intact order
-    let OrderbookContract = new ethers.Contract(process.env.CONTRACT_ADDRESS, OrderbookContractABI, signer);
-    
     OrderbookContract.on('CancelOrder', (account, pair, buySell, orderID) => {
         console.log('Order Cancelled', {account, pair, buySell, id: orderID})
         cancelOrder({account, pair, buySell, id: orderID});
