@@ -16,8 +16,8 @@ async function CreateListener(){
     OrderbookContract.on('CreateOrder', (account, amount, buySell, date, orderType, pair, price, orderID) => {
         let volume = amount/1e18;
         let _price = price/1e18;
-        console.log('here')
-        if(volume == 0 || _price == 0) return;
+        if(volume == 0) return;
+        if(orderType === 'market' && _price === 0) return;
         let orderData = {
             id: orderID,
             pair,
@@ -34,14 +34,6 @@ async function CreateListener(){
         };
         console.log('Order Created', orderData)
         createOrder(orderData);
-        // console.log(`Order Account: ${account}`);
-        // console.log(`Order Amount: ${amount/1e18}`);
-        // console.log(`Order BuySell: ${buySell}`);
-        // console.log(`Order Date: ${date}`);
-        // console.log(`Order Type: ${orderType}`);
-        // console.log(`Order Pair: ${pair}`);
-        // console.log(`Order Price: ${price/1e18}`);
-        // console.log(`Order ID: ${orderID}`);
     })
     
     
