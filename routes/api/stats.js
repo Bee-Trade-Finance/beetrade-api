@@ -48,8 +48,8 @@ router.get("/token", async (req, res) => {
     let currentPrice = sortedOrders[0]?.price? sortedOrders[0].price : 0;
     if(tokenSymbol === 'USDT') currentPrice = 1;
     
-    returnData.price = currentPrice;
-    returnData.volumeTradedUSD = returnData.totalAmountTraded*currentPrice;
+    returnData.price = currentPrice.toFixed(4);
+    returnData.volumeTradedUSD = (returnData.totalAmountTraded*currentPrice).toFixed(4);
     
     
     res.json(returnData)
@@ -81,10 +81,10 @@ router.get("/pair", async (req, res) => {
 
         let trade = doc.data();
         orders.push(trade);
-        returnData.totalAmountTraded += trade.amountA;
-        if(i===0) returnData.low = trade.price;
-        if(trade.price < returnData.low) returnData.low = trade.price;
-        if(trade.price > returnData.high) returnData.high = trade.price;
+        returnData.totalAmountTraded += trade.amountA.toFixed(4);
+        if(i===0) returnData.low = trade.price.toFixed(4);
+        if(trade.price < returnData.low) returnData.low = trade.price.toFixed(4);
+        if(trade.price > returnData.high) returnData.high = trade.price.toFixed(4);
         i += 1;
     });
     let sortedOrders = orders.sort((a,b)=> b.date-a.date);
@@ -93,8 +93,8 @@ router.get("/pair", async (req, res) => {
 
     let priceChange = ((currentPrice-openingPrice) / openingPrice) * 100;
 
-    returnData.price = currentPrice;
-    returnData.priceChange = priceChange;
+    returnData.price = currentPrice.toFixed(4);
+    returnData.priceChange = priceChange.toFixed(4);
     res.json(returnData);
 })
 module.exports = router;
