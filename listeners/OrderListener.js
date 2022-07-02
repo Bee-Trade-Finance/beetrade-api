@@ -17,7 +17,7 @@ async function CreateListener(){
         let volume = amount/1e18;
         let _price = price/1e18;
         if(volume == 0) return;
-        if(orderType === 'market' && _price === 0) return;
+        if(orderType === 'limit' && _price === 0) return;
         let orderData = {
             id: orderID,
             pair,
