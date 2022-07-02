@@ -9,6 +9,7 @@ router.get("/all", async (req, res) => {
     // total trades all time
     // total volume exchange 24hr
     // total trades 24hr
+    res.json({working: true})
     
 });
 
@@ -81,7 +82,7 @@ router.get("/pair", async (req, res) => {
 
         let trade = doc.data();
         orders.push(trade);
-        returnData.totalAmountTraded += trade.amountA.toFixed(4);
+        returnData.totalAmountTraded += trade.amountA;
         if(i===0) returnData.low = trade.price.toFixed(4);
         if(trade.price < returnData.low) returnData.low = trade.price.toFixed(4);
         if(trade.price > returnData.high) returnData.high = trade.price.toFixed(4);
@@ -95,6 +96,7 @@ router.get("/pair", async (req, res) => {
 
     returnData.price = currentPrice.toFixed(4);
     returnData.priceChange = priceChange.toFixed(4);
+    returnData.totalAmountTraded = returnData.totalAmountTraded.toFixed(4);
     res.json(returnData);
 })
 module.exports = router;
