@@ -16,12 +16,13 @@ async function CreateListener(){
     OrderbookContract.on('CreateOrder', (account, amount, buySell, date, orderType, pair, price, orderID) => {
         let volume = amount/1e18;
         let _price = price/1e18;
+        if(orderType === 'market') _price = 0;
         if(volume == 0) return;
         if(orderType === 'limit' && _price === 0) return;
         let orderData = {
             id: orderID,
             pair,
-            amountA: buySell === 'buy'? volume/_price : volume,
+            amountA: buySell === 'buy'? (orderType === 'market' ? 0: volume/_price) : volume,
             amountB: buySell === 'buy'? volume : volume * _price,
             price: _price, 
             volume, 
