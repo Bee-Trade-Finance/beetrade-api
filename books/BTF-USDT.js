@@ -116,7 +116,7 @@ function addOrders(orders) {
         if(orderType === 'limit') {
             newBookOrder = new LimitOrder(id, side.get(buySell), price, quantity);
         } else {
-            newBookOrder = new MarketOrder(id, side.get(buySell), quantity, 1e18);
+            newBookOrder = new MarketOrder(id, side.get(buySell), quantity, 50000);
         }
         let result = book.add(newBookOrder);
         if(result.makers.length > 0){
@@ -203,6 +203,5 @@ const buyOrdersSocket = () => {
     });
 }
 
-buyOrdersSocket();
-
 sellOrdersSocket();
+buyOrdersSocket();

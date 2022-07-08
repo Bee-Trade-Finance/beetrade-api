@@ -41,6 +41,15 @@ const fetchOrCreateUser = async (address) => {
   }
 }
 
+const fetchOrders = async (pair, buySell) => {
+  const q = query(collection(db, `${pair}-${buySell.toUpperCase()}`));
+  const querySnapshot = await getDocs(q);
+  let res = [];
+  querySnapshot.forEach((doc) => {
+    res.push(doc.data())
+  })
+  return res;
+}
 
 const sendOrder = async (order) => {
   try {
@@ -133,5 +142,6 @@ module.exports = {
     setDoc,
     updateDoc,
     deleteDoc,
-    deleteOrder
+    deleteOrder,
+    fetchOrders
 };
