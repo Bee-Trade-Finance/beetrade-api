@@ -30,18 +30,12 @@ async function estimateMarketOrder(pair, buySell, amountA, amountB){
             }
             
             if(currentOrder.amountB < amountAvailable){
-                console.log('Amounnt Available',amountAvailable)
-                console.log('current order amounnt A',currentOrder.amountA)
                 amountGet += currentOrder.amountA;
-                console.log('current order amounnt B',currentOrder.amountB)
                 amountAvailable -= currentOrder.amountB;
-                console.log('Amounnt Left',amountAvailable)
                 if(index===0) price = currentOrder.price;
                 index++;
 
             } else {
-                console.log('current order amounnt B Last',currentOrder.amountB)
-                console.log('Amount to be addded',(amountAvailable/currentOrder.price))
                 amountGet += (amountAvailable/currentOrder.price);
                 amountAvailable -= currentOrder.amountB;
                 if(index===0) price = currentOrder.price;
@@ -50,6 +44,7 @@ async function estimateMarketOrder(pair, buySell, amountA, amountB){
         }
 
         return {price, amountGet}
+
     } else {
         let orders = await fetchOrders(pair, 'BUY')
         let sortedOrders = orders.sort((a, b) => b.price - a.price);
@@ -58,8 +53,13 @@ async function estimateMarketOrder(pair, buySell, amountA, amountB){
         let price = 0;
         let index = 0;
 
-        do {
+        while(true){
             let currentOrder = sortedOrders[index];
+
+            if(!currentOrder){
+                amountGet += (amountAvailable*price);
+                break;
+            }
             if(currentOrder.amountA < amountAvailable){
                 amountGet += currentOrder.amountB;
                 amountAvailable -= currentOrder.amountA;
@@ -68,10 +68,14 @@ async function estimateMarketOrder(pair, buySell, amountA, amountB){
 
             } else {
                 amountGet += (amountAvailable*currentOrder.price);
+                amountAvailable -= currentOrder.amountA;
                 if(index===0) price = currentOrder.price;
-                continueLoop = false;
+                break;
             }
-        } while (continueLoop)
+        }
+
+    
+            
         return {price, amountGet}
     }
 }
